@@ -24,15 +24,19 @@ jobs:
         # Falha se achar erro de segurança
         run: bandit -r src/ -ll
 
-  # JOB 2: DEPLOY (Databricks)
-  deploy-prod:
-    needs: security-scan
+# 2. DEPLOY
+  deploy:
+    needs: security-check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: databricks/setup-cli@main
       
       - name: Deploy to Prod
+        # ADICIONE ESTA LINHA ABAIXO:
+        working-directory: ./etldemo  
+        # ^^^ (Coloque o nome EXATO da pasta onde está o databricks.yml)
+        
         run: databricks bundle deploy -t prod
         env:
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}

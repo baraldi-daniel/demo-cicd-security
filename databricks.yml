@@ -15,4 +15,6 @@ targets:
     mode: production
     workspace:
       host: https://adb-3250511655996160.0.azuredatabricks.net  # <--- Coloque sua URL aqui
-      root_path: /Users/daniel.baraldi@databricks.com/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      user_name: daniel.baraldi@databricks.com
