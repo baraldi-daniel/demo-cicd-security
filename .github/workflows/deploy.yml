@@ -1,0 +1,39 @@
+name: CI/CD Blindado
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  # JOB 1: SEGURANÇA (Bandit)
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install Tools
+        run: pip install bandit nbconvert
+
+      - name: Convert Notebooks
+        run: jupyter nbconvert --to python src/*.ipynb
+
+      - name: Run Security Scan
+        # Falha se achar erro de segurança
+        run: bandit -r src/ -ll
+
+  # JOB 2: DEPLOY (Databricks)
+  deploy-prod:
+    needs: security-scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: databricks/setup-cli@main
+      
+      - name: Deploy to Prod
+        run: databricks bundle deploy -t prod
+        env:
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}

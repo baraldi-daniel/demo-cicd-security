@@ -1,0 +1,16 @@
+resources:
+  jobs:
+    sales_demo_job:
+      name: "[${bundle.target}] Pipeline de Vendas"
+      tasks:
+        - task_key: notebook_task
+          job_cluster_key: job_cluster
+          notebook_task:
+            notebook_path: ../src/process_sales.ipynb
+      
+      job_clusters:
+        - job_cluster_key: job_cluster
+          new_cluster:
+            spark_version: 15.4.x-scala2.12
+            node_type_id: Standard_DS3_v2 # Ajuste conforme sua cloud
+            num_workers: 1
