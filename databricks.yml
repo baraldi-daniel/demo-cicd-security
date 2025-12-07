@@ -1,0 +1,17 @@
+bundle:
+  name: sales-etl-demo
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-3250511655996160.0.azuredatabricks.net  # <--- Coloque sua URL aqui
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-3250511655996160.0.azuredatabricks.net  # <--- Coloque sua URL aqui
