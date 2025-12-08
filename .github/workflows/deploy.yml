@@ -21,8 +21,9 @@ jobs:
       - name: Convert Notebooks
         run: jupyter nbconvert --to python **/*.ipynb
 
-      - name: Run Bandit
-        run: bandit -r . -ll
+      - name: Run Bandit Scan
+        run: bandit -r . -x .github
+
 
   # JOB 2
   deploy-prod:
